@@ -1,16 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for
 from models import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import session
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = "08f3d81df9198addad56f9c599b243f2"
 
 db.init_app(app)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    username = session.get("username")
+    return render_template("index.html", username = username)
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -34,14 +37,17 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
         user = User.query.filter_by(username=username).first()
         if not user or not check_password_hash(user.password, password):
             return render_template("login.html", error="Wrong username or password")
-
+        session["username"] = user.username    
         return redirect(url_for("home"))
-
     return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("username", None)
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     with app.app_context():
