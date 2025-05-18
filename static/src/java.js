@@ -241,7 +241,7 @@ let currentLocationButton = document.querySelector("#current-location");
 currentLocationButton.addEventListener("click", getCurrentLocation);
 setInterval(function(){
   search(currentCity);
-}, 3600000);
+}, 1800000);
 function saveToHistory(city){
   city = city.trim();
   if(!city) return;

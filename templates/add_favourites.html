@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Favourite Cities</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='src/style.css') }}" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+  background-color: #B8DBF1;
+    }
+  </style>
+</head>
+<body>
+    <div class="theme-toggle text-right" style="margin: 20px;">
+        <button id="toggle-theme" class="btn btn-outline-secondary">Dark Mode</button>
+    </div>
+  <div class="favourites-container">
+    <h2>Add your favourite cities</h2>
+
+    <form action="{{ url_for('add_favourites') }}" method="POST">
+      <input type="text" name="city" placeholder="Enter a city" required />
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+    <h4>Your favourites:</h4>
+    <ol>
+      {% for city in favourites %}
+        <li>
+          {{ city.city_name }}
+          <form action="{{ url_for('remove_favourite') }}" method="POST" style="margin: 0;">
+            <input type="hidden" name="city_id" value="{{ city.id }}">
+            <button class="btn btn-outline-secondary btn-sm remove-btn" type="submit">Remove</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ol>
+
+    <a href="/" class="btn btn-primary back-button">Back to homepage</a>
+  </div>
+  <script src="static/src/java.js"></script>
+</body>
+</html>
