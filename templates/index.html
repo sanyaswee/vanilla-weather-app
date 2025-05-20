@@ -26,6 +26,7 @@
   {% if username %}
     <span class="welcome" style="font-size: 18px; font-weight: 500; margin-right: 10px; display: flex; align-items: center;">Hi, {{ username }}!</span>
     <a href="/logout" class="btn btn-outline-secondary ml-2">Exit</a>
+    <a href="/add_favourites" class="btn btn-outline-info ml-2">Favourites</a>
   {% else %}
     <a href="/register" class="btn btn-outline-primary">Sign up</a>
     <a href="/login" class="btn btn-outline-secondary ml-2">Sign in</a>

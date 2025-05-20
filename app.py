@@ -59,6 +59,7 @@ def add_favourites():
     if request.method == "POST":
         city = request.form.get("city")
         if city and user:
+            city = city.strip().title()
             existing = FavouriteCity.query.filter_by(user_id=user.id, city_name=city).first()
             if not existing:
                 favourite = FavouriteCity(city_name=city, user_id=user.id)

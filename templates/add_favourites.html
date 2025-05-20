@@ -27,7 +27,7 @@
     <ol>
       {% for city in favourites %}
         <li>
-          {{ city.city_name }}
+          {{ city.city_name.title() }}
           <form action="{{ url_for('remove_favourite') }}" method="POST" style="margin: 0;">
             <input type="hidden" name="city_id" value="{{ city.id }}">
             <button class="btn btn-outline-secondary btn-sm remove-btn" type="submit">Remove</button>
