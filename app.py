@@ -2,11 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for
 from models import db, User, FavouriteCity
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import session
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = "08f3d81df9198addad56f9c599b243f2"
+load_dotenv()
+app.secret_key = os.getenv("SECRET_KEY")
 
 db.init_app(app)
 
