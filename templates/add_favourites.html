@@ -12,9 +12,12 @@
   </style>
 </head>
 <body>
-    <div class="theme-toggle text-right" style="margin: 20px;">
-        <button id="toggle-theme" class="btn btn-outline-secondary">Dark Mode</button>
-    </div>
+   <div class="theme-toggle d-flex justify-content-end align-items-center gap-2" style="margin: 20px;">
+  <form action="/" method="get" style="margin: 0; margin-right: 10px;">
+    <button type="submit" class="btn btn-primary">Back to homepage</button>
+  </form>
+  <button id="toggle-theme" class="btn btn-outline-secondary">Dark Mode</button>
+</div>
   <div class="favourites-container">
     <h2>Add your favourite cities</h2>
 
@@ -24,20 +27,75 @@
     </form>
 
     <h4>Your favourites:</h4>
-    <ol>
-      {% for city in favourites %}
-        <li>
-          {{ city.city_name.title() }}
-          <form action="{{ url_for('remove_favourite') }}" method="POST" style="margin: 0;">
-            <input type="hidden" name="city_id" value="{{ city.id }}">
-            <button class="btn btn-outline-secondary btn-sm remove-btn" type="submit">Remove</button>
-          </form>
-        </li>
-      {% endfor %}
-    </ol>
-
-    <a href="/" class="btn btn-primary back-button">Back to homepage</a>
+   <ul class="favourites-weather" style="padding-left: 0;">
+  {% for city in favourites %}
+    <li data-city="{{ city.city_name }}" style="list-style: none; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+      <form action="{{ url_for('remove_favourite') }}" method="POST" style="margin: 0;">
+        <input type="hidden" name="city_id" value="{{ city.id }}">
+        <button class="btn btn-outline-secondary remove-btn" type="submit">Remove</button>
+      </form>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span>{{ city.city_name }}</span>
+        <span class="weather-info"></span>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
   </div>
-  <script src="static/src/java.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.querySelector("#toggle-theme");
+    function applyTheme(theme) {
+      if (theme === "dark") {
+        document.body.classList.add("dark-mode");
+        if (toggleBtn) toggleBtn.innerText = "Light mode";
+      } else {
+        document.body.classList.remove("dark-mode");
+        if (toggleBtn) toggleBtn.innerText = "Dark mode";
+      }
+    }
+
+    let savedTheme = localStorage.getItem("theme") || "light";
+    applyTheme(savedTheme);
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", function () {
+        let currentTheme = document.body.classList.contains("dark-mode") ? "dark" : "light";
+        let newTheme = currentTheme === "dark" ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
+        applyTheme(newTheme);
+      });
+    }
+    let apiKey = "e43d0522c6a2b491f8bte6b227o4172b";
+    let favouritesContainer = document.querySelector(".favourites-weather");
+
+    if (favouritesContainer) {
+      const items = favouritesContainer.querySelectorAll("li[data-city]");
+      items.forEach((li) => {
+        const city = li.dataset.city;
+        if (city) {
+          fetch(`https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`)
+            .then((response) => response.json())
+            .then((data) => {
+              const weather = data.condition.description;
+              const temperature = Math.round(data.temperature.current);
+              const icon = data.condition.icon;
+              const iconUrl = `https://shecodes-assets.s3.amazonaws.com/api/weather/icons/${icon}.png`;
+
+              const span = document.createElement("span");
+              span.innerHTML =  `- ${weather}, ${temperature}°C <img src="${iconUrl}" alt="${weather}" width="30"/>`;
+              li.appendChild(span);
+            })
+            .catch((error) => {
+              console.error("Error with the upload of the weather:", error);
+              const span = document.createElement("span");
+              span.innerText = " — Weather unavailable";
+              li.appendChild(span);
+            });
+        }
+      });
+    }
+  });
+</script>
 </body>
 </html>
