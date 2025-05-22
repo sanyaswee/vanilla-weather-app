@@ -179,58 +179,119 @@ li{
   }
 }
 @media (max-width: 480px) {
-  h1 {
-    font-size: 28px;
-  }
-  #temperature {
-    font-size: 40px;
+  body {
+    padding: 10px;
   }
 
-  .weather-temperature .units {
-    font-size: 16px;
-    top: -10px;
+  h1 {
+    font-size: 28px;
+    text-align: center;
   }
+
+  #temperature {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .weather-temperature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   .weather-temperature img,
   #icon {
     width: 50px;
     height: 50px;
+    order: -1;
+    margin-bottom: 10px;
   }
+
+  .weather-temperature .units {
+    font-size: 16px;
+    top: 0;
+  }
+
   .weather-forecast .col-2 {
     flex: 0 0 50%;
     max-width: 50%;
     margin-bottom: 15px;
   }
+
   .forecast-day {
     font-size: 16px;
   }
+
   .forecast-temp-max,
   .forecast-temp-min {
     font-size: 14px;
   }
+
   #city-input {
     font-size: 14px;
   }
+
   .btn {
     font-size: 14px;
     padding: 8px;
-  }
-  .weather-temperature .units {
-    font-size: 16px;
-    top: -10px;
-    display: inline-block;
-    margin-top: 5px;
+    white-space: nowrap;
   }
 
-  .buttons-group,
-  .theme-toggle {
+  #search-form .row {
+    display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: stretch;
+  }
+
+  #search-form .col-2,
+  #search-form .col-8 {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
+  .buttons-group {
+    flex-direction: column;
+    align-items: stretch;
     gap: 10px;
   }
 
-  .buttons-group .btn,
-  .theme-toggle .btn {
-    width: 100%;
+  .welcome {
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .back-button,
+  #toggle-theme {
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  .favourites-container {
+    padding: 20px;
+    margin: 0 auto;
+  }
+
+  .favourites-weather li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .favourites-weather span {
+    display: block;
+    margin-left: auto;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  .remove-btn {
+    margin-left: 10px;
   }
 }
 .theme-toggle {
